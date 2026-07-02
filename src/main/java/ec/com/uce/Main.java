@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import ec.com.uce.application.service.AnimacionService;
 import ec.com.uce.application.service.FacturaService;
+import ec.com.uce.application.service.FacturaServiceParalelo;
 import ec.com.uce.application.service.MailService;
 import ec.com.uce.application.service.ReporteService;
 import ec.com.uce.domain.model.Animacion;
@@ -26,28 +27,22 @@ public class Main {
     public static class App implements QuarkusApplication {
 
 
-        @Inject
-        private AnimacionService animacionService
-        ;
+       @Inject
+        private FacturaServiceParalelo facturaServiceParalelo;
+        
         @Override
         public int run(String... args) throws Exception {
 
             String nombreHilo = Thread.currentThread().getName();
-            System.out.println("*************************************************");
             System.out.println("nombre del hilo Main: " + nombreHilo);
             System.out.println("ID:" + Thread.currentThread().threadId());
-            System.out.println("*************************************************\n");
-            
-            Animacion proyecto = new Animacion();
-            proyecto.setTitulo("Cortometraje Espacial");
-            proyecto.setEstudio("Quito Labs Animation");
-            this.animacionService.guardar(proyecto);
 
-            System.out.println("\n--- INICIANDO ANIMACIÓN ---");
-            this.animacionService.procesarGuion();
-            this.animacionService.crearModelos3D();
-            this.animacionService.aplicarTexturas();
-            this.animacionService.generarRender();
+            Factura f1= new Factura();
+            f1.setFecha(LocalDate.of(2026, 06, 12));
+            f1.setNumero("003-22");
+            f1.setRuc("154541313");
+
+            this.facturaServiceParalelo.guardar(f1);
 
             return 0;
         }

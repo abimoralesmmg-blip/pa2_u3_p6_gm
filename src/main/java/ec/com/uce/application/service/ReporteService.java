@@ -1,8 +1,8 @@
 package ec.com.uce.application.service;
 
-import ec.com.uce.domain.model.Factura;
-import ec.com.uce.domain.model.Reporte;
 
+import ec.com.uce.domain.model.Reporte;
+import ec.com.uce.domain.respository.MedirTiempo;
 import ec.com.uce.infraestructure.repository.ReporteRepositoryImpl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -15,6 +15,7 @@ public class ReporteService {
      @Inject
     private ReporteRepositoryImpl reporteRepositoryImpl;
 
+    @MedirTiempo
     public void guardar (Reporte reporte){
         String nombreHilo =Thread.currentThread().getName();
              System.out.println("nombre del hilo Reporte: "+ nombreHilo);
