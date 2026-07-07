@@ -1,9 +1,10 @@
 package ec.com.uce.application.service;
 
 import java.time.LocalDate;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Future; // IMPORTANTE IMPORTAR ESTO
 
 import ec.com.uce.domain.model.Factura;
 import ec.com.uce.domain.model.Mail;
@@ -27,11 +28,14 @@ public class FacturaServiceParalelo {
     @Inject
     private ReporteService reporteService;
 
-   
-    
+    @Inject
+    private ReporteServiceTarea reporteServiceTarea;
+
+    @Inject
+    private MailServiceTarea mailServiceTarea;
 
     @MedirTiempo
-    public void guardar(Factura factura) {
+    public void guardar(Factura factura) throws InterruptedException, ExecutionException {
 
         String nombreHilo = Thread.currentThread().getName();
         System.out.println("nombre del hilo Factura: " + nombreHilo + " | ID: " + Thread.currentThread().threadId());
@@ -48,10 +52,12 @@ public class FacturaServiceParalelo {
         repo.setTipo("Texto");
         repo.setContenedor("Entrega importante");
 
-        // Hilo especifico
-        ReporteServiceTarea reporteTarea = new ReporteServiceTarea(repo, reporteService );
-        // ejecutamos el hilo
-        executorService.submit(reporteTarea);
+        this.reporteServiceTarea.setReporte(repo);
+
+        //ReporteServiceTarea reporteTarea = new ReporteServiceTarea(repo);
+
+        // 1. Disparamos la ejecución y guardamos su "promesa" futura
+        Future<?> futureReporte = executorService.submit(reporteServiceTarea);
 
         // --- TAREA MAIL ---
         Mail mail = new Mail();
@@ -59,17 +65,20 @@ public class FacturaServiceParalelo {
         mail.setRemitente("ErikaMolina");
         mail.setAsunto("Urgencia");
         mail.setFecha(LocalDate.now());
+        this.mailServiceTarea.setMail(mail);
 
-        //hilo especifico
-        MailServiceTarea mTarea = new MailServiceTarea(mail, mailService);
-        executorService.submit(mTarea);
+        //MailServiceTarea mTarea = new MailServiceTarea(mail, mailService);
 
-        // Cerrar el proceso de ejecución
+
+        // 1. Disparamos la ejecución y guardamos su "promesa" futura
+        Future<?> futureMail = executorService.submit(mailServiceTarea);
+
+
+        futureReporte.get();
+        futureMail.get();
+        
+        // 2. Cerramos la recepción de nuevas tareas
         executorService.shutdown();
  
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-        }
     }
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import ec.com.uce.application.service.AnimacionService;
 import ec.com.uce.application.service.FacturaService;
+import ec.com.uce.application.service.FacturaServiceCompletableFuture;
 import ec.com.uce.application.service.FacturaServiceParalelo;
 import ec.com.uce.application.service.MailService;
 import ec.com.uce.application.service.ReporteService;
@@ -28,7 +29,7 @@ public class Main {
 
 
        @Inject
-        private FacturaServiceParalelo facturaServiceParalelo;
+        private FacturaServiceCompletableFuture facturaServiceCompletableFuture;
         
         @Override
         public int run(String... args) throws Exception {
@@ -42,7 +43,7 @@ public class Main {
             f1.setNumero("003-22");
             f1.setRuc("154541313");
 
-            this.facturaServiceParalelo.guardar(f1);
+            this.facturaServiceCompletableFuture.guardar(f1);
 
             return 0;
         }
