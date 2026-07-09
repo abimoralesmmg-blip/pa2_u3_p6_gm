@@ -1,13 +1,12 @@
 package ec.com.uce.infraestructure.repository;
 
-import ec.com.uce.domain.model.Animacion;
+import ec.com.uce.domain.model.Producto;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
-
 @ApplicationScoped
-public class AnimacionRepositoryImpl implements PanacheRepositoryBase<Animacion, Integer> {
-    
-    
+@Transactional
+public class ProductoRepositoryImpl implements PanacheRepositoryBase <Producto, Integer>{
+
 }

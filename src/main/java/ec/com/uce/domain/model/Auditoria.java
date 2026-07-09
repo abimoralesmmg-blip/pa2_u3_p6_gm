@@ -9,28 +9,29 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-
 @Entity
-@Table (name = "auditoria")
+@Table(name = "auditoria")
 public class Auditoria {
 
     @Id
-    @SequenceGenerator (name = "seq_auditoria_generador", sequenceName = "seq_auditoria", allocationSize = 1)
-    @GeneratedValue ( strategy = GenerationType.SEQUENCE, generator = "seq_auditoria_generador")
-    @Column (name = " audi_id")
+    @SequenceGenerator(name = "seq_auditoria_generador", sequenceName = "seq_auditoria", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_auditoria_generador")
+    @Column(name = "audi_id")          
     private Integer id;
 
-    @Column (name = " audi_nombre")
+    @Column(name = "audi_nombre")       
     private String nombreMetodo;
 
-    @Column (name = " audi_argumento")
+    @Column(name = "audi_argumento")  
     private String argumento;
 
-    @Column (name = " audi_fechaHora")
+    @Column(name = "audi_fechaHora")
     private LocalDateTime fechaHora;
 
     @Column(name = "audi_tiempoEjecucionMs")
     private Long tiempoEjecucionMs;
+
+    // Getters y setters (igual)
 
     //setters and getters
     public Integer getId() {

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import ec.com.uce.domain.model.Auditoria;
 import ec.com.uce.domain.respository.Auditar;
+import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
 import jakarta.interceptor.AroundInvoke;
 import jakarta.interceptor.Interceptor;
@@ -12,6 +13,7 @@ import jakarta.interceptor.InvocationContext;
 
 @Auditar
 @Interceptor
+@Priority(1)
 public class AuditoriaInterceptor {
 
     @Inject
@@ -22,6 +24,10 @@ public class AuditoriaInterceptor {
         String nombreMetodo = context.getMethod().getName();
         // Convertimos los parámetros a una representación textual
         String argumentos = Arrays.toString(context.getParameters());
+
+        if (argumentos.length() > 255) {
+        argumentos = argumentos.substring(0, 252) + "...";
+        }
 
         long tiempoInicio = System.currentTimeMillis();
         
