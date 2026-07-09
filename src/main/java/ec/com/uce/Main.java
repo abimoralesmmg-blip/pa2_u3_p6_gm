@@ -3,18 +3,21 @@ package ec.com.uce;
 import java.time.LocalDate;
 
 import ec.com.uce.application.service.AnimacionService;
+import ec.com.uce.application.service.EstudianteService;
 import ec.com.uce.application.service.FacturaService;
 import ec.com.uce.application.service.FacturaServiceCompletableFuture;
 import ec.com.uce.application.service.FacturaServiceParalelo;
 import ec.com.uce.application.service.MailService;
 import ec.com.uce.application.service.ReporteService;
 import ec.com.uce.domain.model.Animacion;
+import ec.com.uce.domain.model.Estudiante;
 import ec.com.uce.domain.model.Factura;
 import ec.com.uce.domain.model.Mail;
 import ec.com.uce.domain.model.Reporte;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
+import jakarta.enterprise.inject.spi.CDI;
 import jakarta.inject.Inject;
 
 @QuarkusMain
@@ -30,10 +33,13 @@ public class Main {
 
        @Inject
         private FacturaServiceCompletableFuture facturaServiceCompletableFuture;
+
+        @Inject
+        EstudianteService service;
         
         @Override
         public int run(String... args) throws Exception {
-
+/*
             String nombreHilo = Thread.currentThread().getName();
             System.out.println("nombre del hilo Main: " + nombreHilo);
             System.out.println("ID:" + Thread.currentThread().threadId());
@@ -44,7 +50,26 @@ public class Main {
             f1.setRuc("154541313");
 
             this.facturaServiceCompletableFuture.guardar(f1);
+*/
 
+
+        // 1. Crear
+        Estudiante est = new Estudiante();
+        est.setNombre("Génessis Molina");
+        service.crear(est); 
+
+         Estudiante est1 = new Estudiante();
+        est1.setNombre("Erika Molina");
+        service.crear(est1); 
+
+        // 2. Actualizar
+        est.setNombre("Génessis Molina Morales");
+        service.actualizar(est); 
+
+        // 3. Eliminar
+        service.eliminar(est.getId()); 
+        
+        System.out.println("Ejecución finalizada. Revisar tabla 'auditoria' en DB.");
             return 0;
         }
 
