@@ -1,6 +1,8 @@
 package ec.com.uce;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import ec.com.uce.application.service.AnimacionService;
 import ec.com.uce.application.service.EstudianteService;
@@ -32,44 +34,27 @@ public class Main {
 
 
        @Inject
-        private FacturaServiceCompletableFuture facturaServiceCompletableFuture;
-
-        @Inject
-        EstudianteService service;
+        private ReporteService reporteService;
         
         @Override
         public int run(String... args) throws Exception {
-/*
-            String nombreHilo = Thread.currentThread().getName();
-            System.out.println("nombre del hilo Main: " + nombreHilo);
-            System.out.println("ID:" + Thread.currentThread().threadId());
 
-            Factura f1= new Factura();
-            f1.setFecha(LocalDate.of(2026, 06, 12));
-            f1.setNumero("003-22");
-            f1.setRuc("154541313");
+            List<Reporte> lista = new ArrayList<>();
 
-            this.facturaServiceCompletableFuture.guardar(f1);
-*/
+            
 
+            for ( int i=0; i <10; i++){
+                Reporte r1 = new Reporte();
+                r1.setTitulo("Reporte"+i);
+                r1.setAutor("Genessis Molina");
+                r1.setTipo("Importante"+i);
+                r1.setContenedor("pdf");
 
-        // 1. Crear
-        Estudiante est = new Estudiante();
-        est.setNombre("Génessis Molina");
-        service.crear(est); 
+                lista.add(r1);
+            }
 
-         Estudiante est1 = new Estudiante();
-        est1.setNombre("Erika Molina");
-        service.crear(est1); 
+            this.reporteService.guardarListaReportes(lista);
 
-        // 2. Actualizar
-        est.setNombre("Génessis Molina Morales");
-        service.actualizar(est); 
-
-        // 3. Eliminar
-        service.eliminar(est.getId()); 
-        
-        System.out.println("Ejecución finalizada. Revisar tabla 'auditoria' en DB.");
             return 0;
         }
 

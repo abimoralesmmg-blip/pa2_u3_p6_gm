@@ -2,3 +2,5 @@ Metodo: crear - Fecha: 2026-07-08T19:12:24.924211500
 Metodo: crear - Fecha: 2026-07-08T19:22:23.996614400
 Metodo: crear - Fecha: 2026-07-08T19:22:59.286653100
 Metodo: crear - Fecha: 2026-07-08T19:22:59.406758300
+Metodo: crear - Fecha: 2026-07-08T19:40:12.247568
+Metodo: crear - Fecha: 2026-07-08T19:40:12.365834800
