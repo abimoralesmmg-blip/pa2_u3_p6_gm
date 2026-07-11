@@ -43,17 +43,18 @@ public class Main {
 
             
 
-            for ( int i=0; i <10; i++){
+            for ( int i=0; i <100000; i++){
                 Reporte r1 = new Reporte();
-                r1.setTitulo("Reporte"+i);
+                r1.setTitulo(i+"Reporte");
                 r1.setAutor("Genessis Molina");
-                r1.setTipo("Importante"+i);
+                r1.setTipo(i+"Importante");
                 r1.setContenedor("pdf");
 
                 lista.add(r1);
             }
 
-            this.reporteService.guardarListaReportes(lista);
+           this.reporteService.guardarListaReportes(lista);
+           //this.reporteService.guardarListaReporteParalelo(lista);
 
             return 0;
         }

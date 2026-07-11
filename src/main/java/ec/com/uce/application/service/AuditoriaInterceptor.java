@@ -23,6 +23,9 @@ public class AuditoriaInterceptor {
         // Convertimos los parámetros a una representación textual
         String argumentos = Arrays.toString(context.getParameters());
 
+        if (argumentos.length() > 255) {
+        argumentos = argumentos.substring(0, 252) + "...";
+        }
         long tiempoInicio = System.currentTimeMillis();
         
         // Ejecución del método original
