@@ -35,9 +35,9 @@ public class Main {
 
             
 
-            for (int i = 0; i < 500; i++) {
+            for (int i = 0; i < 500000; i++) {
                 Producto p = new Producto();
-                p.setNombre("Producto " + i);
+                p.setNombre(i+"Producto " );
                 p.setDescripcion("Descripción del producto " + i);
                 p.setPrecio(19.99 + i);
                 p.setStock(i % 100);
@@ -46,7 +46,9 @@ public class Main {
                 lista.add(p);
             }
 
-            this.productoService.guardarLista(lista);
+            
+           //this.productoService.guardarListaSecuencial(lista);
+            this.productoService.guardarListaParalela(lista);
 
             return 0;
         }

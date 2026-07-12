@@ -19,36 +19,39 @@ public class AuditoriaInterceptor {
     @Inject
     private AuditoriaService auditoriaService; 
 
-    @AroundInvoke
-    public Object medir(InvocationContext context) throws Exception {
-        String nombreMetodo = context.getMethod().getName();
-        // Convertimos los parámetros a una representación textual
-        String argumentos = Arrays.toString(context.getParameters());
-
-        if (argumentos.length() > 255) {
+  @AroundInvoke
+public Object medir(InvocationContext context) throws Exception {
+    String nombreMetodo = context.getMethod().getName();
+    String argumentos = Arrays.toString(context.getParameters());
+    if (argumentos.length() > 255) {
         argumentos = argumentos.substring(0, 252) + "...";
-        }
+    }
 
-        long tiempoInicio = System.currentTimeMillis();
-        
-        // Ejecución del método original
-        Object result = context.proceed();
-        
+    long tiempoInicio = System.currentTimeMillis();
+    Object result = null;
+    try {
+        result = context.proceed();
+    } finally {
         long tiempoFin = System.currentTimeMillis();
         long tiempoEjecucion = tiempoFin - tiempoInicio;
 
-        // Crear objeto de auditoría
         Auditoria auditoria = new Auditoria();
         auditoria.setNombreMetodo(nombreMetodo);
         auditoria.setArgumento(argumentos);
         auditoria.setFechaHora(LocalDateTime.now());
         auditoria.setTiempoEjecucionMs(tiempoEjecucion);
 
-        // Guardar en base de datos
-        auditoriaService.crear(auditoria);
+        // Guardar auditoría (con su propia transacción)
+        try {
+            auditoriaService.crear(auditoria);
+        } catch (Exception e) {
+            e.printStackTrace();  // Para ver si falla al guardar
+        }
 
         System.out.println("Método interceptado: " + nombreMetodo);
-        System.out.println("Argumentos recibidos: " + argumentos); 
-        return result;
+        System.out.println("Argumentos recibidos: " + argumentos);
+        System.out.println("Tiempo de ejecución: " + tiempoEjecucion + " ms");
     }
+    return result;
+}
 }

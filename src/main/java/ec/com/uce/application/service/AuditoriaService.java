@@ -12,7 +12,7 @@ public class AuditoriaService {
     @Inject
     private AuditoriaRepositoryImpl auditoriaRepositoryImpl;
 
-    
+    @Transactional
     public void crear (Auditoria auditoria){
 
         this.auditoriaRepositoryImpl.crear(auditoria);

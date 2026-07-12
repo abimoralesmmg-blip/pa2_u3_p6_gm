@@ -1,5 +1,7 @@
 package ec.com.uce.application.service;
 
+import java.util.List;
+
 import ec.com.uce.domain.model.Producto;
 import ec.com.uce.domain.respository.Auditar;
 import ec.com.uce.infraestructure.repository.ProductoRepositoryImpl;
@@ -8,26 +10,26 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
-@Transactional
 public class ProductoService {
 
     @Inject
     private ProductoRepositoryImpl productoRepository;
 
+    @Transactional
     @Auditar
-    public void guardar(Producto producto) {
-        try {
-            Thread.sleep(10); 
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+    public void guardarListaSecuencial(List<Producto> lista) {
+        for (Producto p : lista) {
+            productoRepository.persist(p);
         }
-        productoRepository.persist(producto);
     }
 
-     @Auditar
-    public void guardarLista(java.util.List<Producto> lista) {
-        for (Producto p : lista) {
-            guardar(p);  
-        }
+    @Auditar
+    public void guardarListaParalela(List<Producto> lista) {
+        lista.parallelStream().forEach(this::persistirIndividual);
+    }
+
+    @Transactional
+    public void persistirIndividual(Producto p) {
+        productoRepository.persist(p);
     }
 }
